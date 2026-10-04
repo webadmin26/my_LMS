@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+.sidebar {
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform 300ms ease-in-out, visibility 0s linear 300ms;
+}
+
+.sidebar-backdrop {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 300ms ease-in-out, visibility 0s linear 300ms;
+}
+
+.sidebar.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.sidebar-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+@media (min-width: 64rem) {
+  .sidebar {
+    transform: none;
+    visibility: visible;
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar-backdrop {
+    transition: none;
+  }
+}
