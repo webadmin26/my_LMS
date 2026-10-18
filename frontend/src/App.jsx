@@ -1,7 +1,10 @@
 import { useState } from "react";
 
+import BookManagement from "./pages/BookManagement";
+
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activePage, setActivePage] = useState("Dashboard");
 
   const navigationItems = [
     { label: "Dashboard", icon: "🟦" },
@@ -15,8 +18,9 @@ function App() {
 
   return (
     /* MAIN CONTAINER */
-    <div className="grid min-h-dvh grid-cols-1 grid-rows-[48px_1fr] bg-gray-100 font-sans lg:grid-cols-[240px_minmax(0,1fr)] lg:grid-rows-[48px_1fr]">
 
+    /* Full screen sidebar settings */
+    <div className="grid min-h-dvh grid-cols-1 grid-rows-[48px_1fr] bg-gray-100 font-sans lg:grid-cols-[260px_minmax(0,1fr)] lg:grid-rows-[48px_1fr]">
       {/* SIDEBAR */}
       <button
         type="button"
@@ -25,13 +29,15 @@ function App() {
         tabIndex={isSidebarOpen ? 0 : -1}
         aria-hidden={!isSidebarOpen}
         className={`sidebar-backdrop fixed inset-0 z-30 bg-black/40 lg:hidden ${isSidebarOpen ? "is-open" : ""}`}
-        />
+      />
 
+
+      {/* Small screen sidebar settings */}
       <aside
         id="sidebar"
-        className={`sidebar ${isSidebarOpen ? "is-open" : ""} fixed inset-y-0 left-0 z-40 flex w-[240px] flex-col overflow-y-auto bg-[#9384c4] p-4 text-white lg:static lg:row-span-2 lg:w-auto`}
+        className={`sidebar ${isSidebarOpen ? "is-open" : ""} fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col overflow-y-auto bg-[#9384c4] p-4 text-white lg:static lg:row-span-2 lg:w-auto`}
       >
-        
+
         <div className="mb-6 text-center text-3xl leading-tight">
           COMPANY <br /> LOGO
         </div>
@@ -43,7 +49,11 @@ function App() {
               <li key={item.label}>
                 <button
                   type="button"
-                  className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-3 text-left text-base transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-3 text-left text-base text-lg transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  onClick={() => {
+                    setActivePage(item.label);
+                    setIsSidebarOpen(false);
+                  }}
                 >
                   <span aria-hidden="true" className="shrink-0">
                     {item.icon}
@@ -68,21 +78,27 @@ function App() {
       {/* MAIN HEADER */}
       <header className="flex items-center gap-3 bg-[#9384c4] px-4 text-white">
         <button
-        type="button"
-        aria-label={isSidebarOpen ? 'Close navigation' : 'Open navigation'}
-        aria-expanded={isSidebarOpen}
-        aria-controls="sidebar"
-        onClick={() => setIsSidebarOpen((previous) => !previous)}
-        className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-white lg:hidden"
+          type="button"
+          aria-label={isSidebarOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={isSidebarOpen}
+          aria-controls="sidebar"
+          onClick={() => setIsSidebarOpen((previous) => !previous)}
+          className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-white lg:hidden"
         >
-          <span aria-hidden="true" className="text-2xl">☰</span>
+          <span aria-hidden="true" className="text-2xl">
+            ☰
+          </span>
         </button>
 
-      <h1 className="flex-1 text-center text-sm lg:text-base">LIBRARY MANAGEMENT SYSTEM</h1>
+        <h1 className="flex-1 text-center text-sm lg:text-base">
+          LIBRARY MANAGEMENT SYSTEM
+        </h1>
       </header>
 
       {/* PAGE CONTENT */}
-      <main className="min-w-0 min-h-0 bg-white"></main>
+      <main className="min-w-0 min-h-0 bg-white">
+        {activePage === "Book Management" && <BookManagement />}
+      </main>
     </div>
   );
 }

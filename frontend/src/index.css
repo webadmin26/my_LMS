@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@theme {
+  --font-sans: "Open Sans", sans-serif;
+}
 
 .sidebar {
   transform: translateX(-100%);
