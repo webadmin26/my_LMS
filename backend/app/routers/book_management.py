@@ -3,7 +3,8 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.book_management import books_table, book_copies_table, categories_table
+from app.models.book_management import books_table, book_copies_table, categories_table, isbn_table
+from app.models.book_shelves import book_shelves_table
 from app.schemas.book_management import BookListItem, BookInfo
 
 router = APIRouter(prefix="/books", tags=["Books"])
@@ -38,10 +39,12 @@ def book_info(barcode: str, db: Session = Depends(get_db)):
             books_table.id,
             books_table.book_title,
             books_table.author,
-            books_table.isbn,
+            isbn_table.isbn_10,
+            isbn_table.isbn_13,
             categories_table.category,
             books_table.publisher,
             books_table.publication_year,
+            books_table.pages,
             books_table.ddc_number,
             books_table.author_number,
             books_table.subject_heading,
@@ -49,12 +52,15 @@ def book_info(barcode: str, db: Session = Depends(get_db)):
             books_table.description,
 
             book_copies_table.barcode,
-            book_copies_table.shelf_location,
+            book_shelves_table.shelf_code,
             book_copies_table.status,
         )
 
-        .join(books_table, book_copies_table.book_id == books_table.id)
+        .join(book_copies_table, book_copies_table.book_id == books_table.id)
+        .outerjoin(isbn_table, isbn_table.book_id == books_table.id)
         .join(categories_table, books_table.category_id == categories_table.id)
+        # outerjoin: a copy with no shelf yet still shows (shelf_code = None)
+        .outerjoin(book_shelves_table, book_copies_table.shelf_id == book_shelves_table.id)
         .where(book_copies_table.barcode == barcode)
 
     )
@@ -83,7 +89,9 @@ def book_info(barcode: str, db: Session = Depends(get_db)):
 
     # Query 3: Selected book status and location info
     status = (
-        select(book_copies_table.barcode, book_copies_table.shelf_location, book_copies_table.status)
+        select(book_copies_table.barcode, book_shelves_table.shelf_code, book_copies_table.status)
+        .select_from(book_copies_table)
+        .outerjoin(book_shelves_table, book_copies_table.shelf_id == book_shelves_table.id)
         .where(book_copies_table.book_id == book_id)
         .order_by(book_copies_table.barcode)
     )

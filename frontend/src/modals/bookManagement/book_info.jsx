@@ -6,7 +6,7 @@ function BookInfo({ onClose, libro }) {
 
   /* Fetch full details of the clicked copy: GET /books/{barcode} */
   useEffect(() => {
-    fetch(`http://localhost:8000/books/${encodeURIComponent(libro.barcode)}`)
+    fetch(`/books/${encodeURIComponent(libro.barcode)}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to load book details");
@@ -41,10 +41,7 @@ function BookInfo({ onClose, libro }) {
         {/* BODY (scrollable) */}
         <div className="min-h-0 flex-1 overflow-y-auto px-6 py-4 scrollbar-none [&::-webkit-scrollbar]:hidden">
 
-          {/* Loading / error message */}
-          {!bookDetails && !error && (
-            <p className="mb-4 text-center text-sm text-stone-500">Loading book details…</p>
-          )}
+          {/* Error message */}
           {error && (
             <p role="alert" className="mb-4 text-center text-sm text-red-600">{error}</p>
           )}
@@ -66,22 +63,30 @@ function BookInfo({ onClose, libro }) {
             <div className="flex flex-col gap-4 text-sm">
               <dl className="grid grid-cols-[150px_minmax(0,1fr)] gap-x-3">
                 <dt>Book ID</dt>
-                <dd>{bookDetails?.id ?? "—"}</dd>
+                <dd>{bookDetails?.barcode ?? "—"}</dd>
                 <dt>Title</dt>
                 <dd>{bookDetails?.book_title ?? libro.book_title}</dd>
                 <dt>Author</dt>
                 <dd>{bookDetails?.author ?? libro.author}</dd>
               </dl>
 
-              <dl className="grid grid-cols-[150px_minmax(0,1fr)] gap-x-3">
+              <dl className="grid grid-cols-[150px_minmax(0,1fr)] gap-x-3 gap-y-1">
                 <dt>ISBN</dt>
-                <dd>{bookDetails?.isbn ?? "—"}</dd>
+                <dd>
+                  <div>ISBN-10: {bookDetails?.isbn_10 ?? "—"}</div>
+                  <div>ISBN-13: {bookDetails?.isbn_13 ?? "—"}</div>
+                </dd>
                 <dt>Category</dt>
                 <dd>{bookDetails?.category ?? "—"}</dd>
                 <dt>Publisher</dt>
                 <dd>{bookDetails?.publisher ?? "—"}</dd>
                 <dt>Publication Year</dt>
                 <dd>{bookDetails?.publication_year ?? "—"}</dd>
+              </dl>
+
+              <dl className="grid grid-cols-[150px_minmax(0,1fr)] gap-x-3">
+                <dt>No. of Pages</dt>
+                <dd>{bookDetails?.pages ?? "—"}</dd>
               </dl>
 
               <dl className="grid grid-cols-[150px_minmax(0,1fr)] gap-x-3">
@@ -117,11 +122,9 @@ function BookInfo({ onClose, libro }) {
               <dd>{bookDetails?.borrowed ?? "—"}</dd>
             </dl>
 
-            <dl className="grid grid-cols-[130px_minmax(0,1fr)] gap-x-3">
-              <dt>Barcode</dt>
-              <dd>{bookDetails?.barcode ?? libro.barcode}</dd>
+            <dl className="grid grid-cols-[130px_minmax(0,1fr)] gap-x-3 content-start">
               <dt>Shelf Location</dt>
-              <dd>{bookDetails?.shelf_location ?? "—"}</dd>
+              <dd>{bookDetails?.shelf_code ?? "—"}</dd>
               <dt>Status</dt>
               <dd className="capitalize">{bookDetails?.status ?? libro.status}</dd>
             </dl>
@@ -150,7 +153,7 @@ function BookInfo({ onClose, libro }) {
                     className={copy.barcode === libro.barcode ? "font-semibold" : ""}
                   >
                     <td className="py-1">{copy.barcode}</td>
-                    <td className="py-1">{copy.shelf_location}</td>
+                    <td className="py-1">{copy.shelf_code ?? "—"}</td>
                     <td className="py-1 capitalize">{copy.status}</td>
                   </tr>
                 ))}
@@ -161,10 +164,18 @@ function BookInfo({ onClose, libro }) {
 
         {/* FOOTER (fixed) */}
         <footer className="shrink-0 px-4 py-3 text-center">
+          {/* Loading message (bottom of the modal, always visible) */}
+          {!bookDetails && !error && (
+            <div className="mb-5">
+              <p role="status" className="loader text-sm font-semibold text-[#3D3C3A]">
+                Loading book information...
+              </p>
+            </div>
+          )}
           <button
             type="button"
             onClick={onClose}
-            className="font-bold text-[#5C5C5C] cursor-pointer hover:scale-105 transition duration-150"
+            className="cursor-pointer font-bold text-[#3D3C3A] hover:underline"
           >
             CLOSE
           </button>

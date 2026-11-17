@@ -13,6 +13,7 @@ class books_table(Base):
     category_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("categories.id"))
     publisher: Mapped[str] = mapped_column(String)
     publication_year: Mapped[int] = mapped_column(SmallInteger)
+    pages: Mapped[int | None] = mapped_column(SmallInteger)
     ddc_number: Mapped[str | None] = mapped_column(String)
     author_number: Mapped[str | None] = mapped_column(String)
     subject_heading: Mapped[str | None] = mapped_column(String)
@@ -34,8 +35,16 @@ class book_copies_table(Base):
     book_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("books.id"))
     barcode: Mapped[str] = mapped_column(String, unique=True)
     accession_number: Mapped[str] = mapped_column(String)
-    shelf_location: Mapped[str] = mapped_column(String)
+    shelf_id: Mapped[int | None ] = mapped_column(BigInteger, ForeignKey("book_shelves.id"))
     status: Mapped[str] = mapped_column(String)
     acquired_at: Mapped[date | None] = mapped_column(Date)
     created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+class isbn_table(Base):
+    __tablename__ = "isbn"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    book_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("books.id"))
+    isbn_10: Mapped[str | None] = mapped_column(String)
+    isbn_13: Mapped[str | None] = mapped_column(String)

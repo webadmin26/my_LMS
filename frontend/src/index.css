@@ -1,7 +1,28 @@
 @import "tailwindcss";
 @theme {
   --font-sans: "Open Sans", sans-serif;
+
+  /* Toast note: fade in, stay, fade out (5s, same as the timer) */
+  --animate-toast: toast 5s ease-in-out forwards;
+
+  @keyframes toast {
+    0% {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    8% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
 }
+
 
 .sidebar {
   transform: translateX(-100%);
@@ -41,5 +62,30 @@
   .sidebar,
   .sidebar-backdrop {
     transition: none;
+  }
+}
+
+
+/* Loading Animation */
+/* Loading Animation: orange line grows under the text */
+.loader {
+  --size: 1px;
+  --color-2: #ff3d00;
+  display: inline-block;
+  position: relative;
+}
+
+.loader::after {
+  content: '';
+  height: calc(4 * var(--size));
+  width: 0%;
+  display: block;
+  background: var(--color-2);
+  animation: 2s lineGrow linear infinite;
+}
+
+@keyframes lineGrow {
+  to {
+    width: 100%;
   }
 }

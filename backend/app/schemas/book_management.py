@@ -11,17 +11,16 @@ class BookListItem(BaseModel):
 # Book Info Modal
 class BookCopyItem(BaseModel):
     barcode: str
-    shelf_location: str
+    shelf_code: str | None
     status: str
 
 class BookInfo(BaseModel):
-    id: int
     book_title: str
     author: str
-    isbn: str
     category: str
     publisher: str
     publication_year: int
+    pages: int | None
     ddc_number: str | None
     author_number: str | None
     subject_heading: str | None
@@ -31,7 +30,9 @@ class BookInfo(BaseModel):
     available: int
     borrowed: int
     barcode: str
-    shelf_location: str
+    shelf_code: str | None
     status: str
+    isbn_10: str | None
+    isbn_13: str | None
     copies: list[BookCopyItem]
 
