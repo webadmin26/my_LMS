@@ -14,6 +14,7 @@ function SearchOpenLibrary({ onClose }) {
   const [loadingBooks, setLoadingBooks] = useState(false)
   const [searchedBooks, setSearchedBooks] = useState("");
   const [textSearched, setTextSearched] = useState("");
+  const [addBook, setAddBook] = useState(null);
 
   const handleSearch = (evnt) => {
     evnt.preventDefault();
@@ -33,7 +34,7 @@ function SearchOpenLibrary({ onClose }) {
       .then((data) => {
         setResults(data);
         setPage(1)
-        setMoreBooks(data.length === 10)
+        setMoreBooks(data.length === 50)
         setHasSearched(true);
         setSearchedBooks(searchBy);
         setTextSearched(searchText.trim());
@@ -61,7 +62,7 @@ const handleLoadMore = () => {
     .then((data) => {
       setResults((previousBooks) => [...previousBooks, ...data]);
       setPage(nextPage);
-      setMoreBooks(data.length === 10);
+      setMoreBooks(data.length === 50);
     })
     .catch(() => setError("Could not load more books. Please try again."))
     .finally(() => setLoadingBooks(false));
@@ -239,6 +240,7 @@ const handleLoadMore = () => {
                     <td className="px-2 py-1">
                       <button
                         type="button"
+                        onClick={() => setAddBook(book)}
                         className="cursor-pointer text-sm font-bold text-emerald-600 hover:underline"
                       >
                         Add Book
@@ -277,7 +279,9 @@ const handleLoadMore = () => {
         </footer>
       </div>
 
-      {false && <AddBook />}
+      {addBook && (
+        <AddBook book={addBook} onClose={() => setAddBook(null)}/>
+      )}
     </div>
   );
 }

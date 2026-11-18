@@ -1,8 +1,19 @@
-function AddBook(){
+import { useState } from "react";
+
+function AddBook( {book, onClose} ){
     const labelStyle = "block text-sm text-[#3D3C3A]";
     const inputStyle = "w-full bg-white px-2 py-1 text-sm focus:outline-2 focus:outline-emerald-500";
     const headingStyle = "mb-4 text-xl text-[#3D3C3A] underline underline-offset-4";
     const fieldGap = "mb-3";
+    const fullTitle = book?.sub_title ? `${book.book_title}: ${book.sub_title}` : book?.book_title ?? "";
+    const [title, setTitle] = useState(fullTitle);
+    const [isbn, setIsbn] = useState([book?.isbn_10, book?.isbn_13].filter(Boolean).join(", "));
+    const [author, setAuthor] = useState(book?.author ?? "");
+    const [publisher, setPublisher] = useState(book?.publisher ?? "");
+    const [publicationYear, setPublicationYear] = useState(book?.publication_year ?? "");
+    const [pages, setPages] = useState(book?.pages ?? "");
+
+
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -28,20 +39,35 @@ function AddBook(){
 
                             <div className={fieldGap}>
                                 <label htmlFor="isbn" className={labelStyle}>ISBN</label>
-                                <input id="isbn" type="text" placeholder="ISBN-10, ISBN-13" className={inputStyle}/>
+                                <input 
+                                id="isbn" 
+                                type="text"
+                                value={isbn}
+                                onChange={(e) => setIsbn(e.target.value)} 
+                                className={inputStyle}/>
                             </div>
 
                             {/* flex-1: Title grows to fill the space left, so its bottom lines up with UPLOAD COVER */}
                             <div className={`${fieldGap} flex flex-1 flex-col`}>
                                 <label htmlFor="book-title" className={labelStyle}>Title</label>
-                                <textarea id="book-title" rows="3" className={`${inputStyle} flex-1 resize-none`}/>
+                                <textarea 
+                                id="book-title" 
+                                rows="3" 
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className={`${inputStyle} flex-1 resize-none`}/>
                             </div>
                         </div>
 
                         {/* Row 1 RIGHT: Book Cover */}
                         <div className="mb-3 flex flex-col items-center">
                             <p className={labelStyle}>Book Cover</p>
-                            <div className="mt-1 h-48 w-36 border border-gray-400 bg-white"></div>
+                            <div className="mt-1 h-48 w-36 border border-gray-400 bg-white">
+                                {book?.cover_url && (
+                                    <img src={book.cover_url} alt={`Cover of ${title}`}
+                                    className="h-full w-full object-cover" />
+                                )}
+                            </div>
                             <button
                                 type="button"
                                 className="mt-1 cursor-pointer text-sm font-bold text-[#3D3C3A] hover:underline"
@@ -53,13 +79,23 @@ function AddBook(){
                         {/* Row 2 LEFT: Author */}
                         <div className={fieldGap}>
                             <label htmlFor="author" className={labelStyle}>Author</label>
-                            <input id="author" type="text" className={inputStyle}/>
+                            <input 
+                            id="author" 
+                            type="text" 
+                            value={author}
+                            onChange={(e) => setAuthor(e.target.value)} 
+                            className={inputStyle}/>
                         </div>
 
                         {/* Row 2 RIGHT: Publisher */}
                         <div className={fieldGap}>
                             <label htmlFor="publisher" className={labelStyle}>Publisher</label>
-                            <input id="publisher" type="text" className={inputStyle}/>
+                            <input 
+                            id="publisher" 
+                            type="text" 
+                            value={publisher}
+                            onChange={(e) => setPublisher(e.target.value)} 
+                            className={inputStyle}/>
                         </div>
 
                         {/* Row 3 LEFT: Category */}
@@ -74,11 +110,21 @@ function AddBook(){
                         <div className="grid grid-cols-2 gap-6">
                             <div className={fieldGap}>
                                 <label htmlFor="publication_year" className={labelStyle}>Publication Year</label>
-                                <input id="publication_year" type="number" className={inputStyle}/>
+                                <input 
+                                id="publication_year" 
+                                type="number" 
+                                value={publicationYear}
+                                onChange={(e) => setPublicationYear(e.target.value)} 
+                                className={inputStyle}/>
                             </div>
                             <div className={fieldGap}>
                                 <label htmlFor="page_number" className={labelStyle}>Number of Pages</label>
-                                <input id="page_number" type="number" min="1" className={inputStyle}/>
+                                <input 
+                                id="page_number"
+                                type="number" min="1" 
+                                value={pages}
+                                onChange={(e) => setPages(e.target.value)} 
+                                className={inputStyle}/>
                             </div>
                         </div>
                     </div>
@@ -117,6 +163,7 @@ function AddBook(){
                 <footer className="flex shrink-0 justify-end gap-8 px-12 py-3">
                     <button
                         type="button"
+                        onClick={onClose}
                         className="cursor-pointer font-bold text-[#3D3C3A] hover:underline"
                     >
                         CANCEL

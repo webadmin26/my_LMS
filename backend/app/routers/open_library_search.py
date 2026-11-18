@@ -28,7 +28,7 @@ def openlibrary(search_by: str, search_text: str, page: int = 1):
     # params = a python dictionary that acts like a container that stores key and values
     # this params is to collect the setted settings from my searh form and and send to open library at once
     params["fields"] = OPENLIBRARY_FIELDS
-    params["limit"] = 10
+    params["limit"] = 50
     params["page"] = page
     
     # Search books on Open Library API by params:
