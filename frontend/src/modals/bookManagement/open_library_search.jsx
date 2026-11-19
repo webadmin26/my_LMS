@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import AddBook from "../add_book";
+import AddBook from "./add_book";
 
 function SearchOpenLibrary({ onClose }) {
   const [searchBy, setSearchBy] = useState("isbn");

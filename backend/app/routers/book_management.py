@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.book_management import books_table, book_copies_table, categories_table, isbn_table
 from app.models.book_shelves import book_shelves_table
-from app.schemas.book_management import BookListItem, BookInfo
+from app.schemas.book_management import BookListItem, BookInfo, CategoryItem
 
 router = APIRouter(prefix="/books", tags=["Books"])
 
@@ -29,7 +29,18 @@ def book_lists(db: Session = Depends(get_db)):
 
     return db.execute(query).mappings().all()
 
-
+#Endpoint para sa Category dropdown ng Add Book form
+@router.get("/categories", response_model=list[CategoryItem])
+def category_list(db: Session = Depends(get_db)):
+    
+    query = (
+        select (
+            categories_table.id,
+            categories_table.category,
+        )
+        .order_by(categories_table.id)
+    )
+    return db.execute(query).mappings().all()
 
 # Endpoint para sa book_info modal
 @router.get("/{barcode}", response_model=BookInfo)

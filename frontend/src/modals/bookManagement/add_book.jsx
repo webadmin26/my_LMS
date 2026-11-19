@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function AddBook( {book, onClose} ){
     const labelStyle = "block text-sm text-[#3D3C3A]";
     const inputStyle = "w-full bg-white px-2 py-1 text-sm focus:outline-2 focus:outline-emerald-500";
     const headingStyle = "mb-4 text-xl text-[#3D3C3A] underline underline-offset-4";
     const fieldGap = "mb-3";
+
+    // USESTATE FOR FETCHING THE BOOK INFORMATION FROM OPEN LIBRARY TO ADD FORM, THE ADD FORM WILL BE AUTOMATICALLY FILLED UP
     const fullTitle = book?.sub_title ? `${book.book_title}: ${book.sub_title}` : book?.book_title ?? "";
     const [title, setTitle] = useState(fullTitle);
     const [isbn, setIsbn] = useState([book?.isbn_10, book?.isbn_13].filter(Boolean).join(", "));
@@ -12,6 +14,23 @@ function AddBook( {book, onClose} ){
     const [publisher, setPublisher] = useState(book?.publisher ?? "");
     const [publicationYear, setPublicationYear] = useState(book?.publication_year ?? "");
     const [pages, setPages] = useState(book?.pages ?? "");
+    
+    // CATEGORY DROPDOWN 
+    const [categories, setCategories] = useState([]);
+    const [categoryId, setCategoryId] = useState("");
+
+    // Load the categories once, when the form opens
+    useEffect(() => {
+        fetch("/books/categories")
+        .then((response) => {
+            if(!response.ok) {
+                throw new Error("Failed to load categories");
+            }
+            return response.json();
+        })
+        .then((data) => setCategories(data))
+        .catch((error) => console.error(error));
+    }, []);
 
 
 
@@ -101,8 +120,20 @@ function AddBook( {book, onClose} ){
                         {/* Row 3 LEFT: Category */}
                         <div className={fieldGap}>
                             <label htmlFor="category" className={labelStyle}>Category</label>
-                            <select id="category" className={`${inputStyle} cursor-pointer`}>
-                                <option value=""></option>
+                            <select 
+                            id="category" 
+                            value={categoryId}
+                            onChange={(e) => setCategoryId(e.target.value)}
+                            className={`${inputStyle} cursor-pointer`}>
+                                <option value="">Select a category</option>
+                                {categories.map((category) => (
+                                    <option 
+                                    key={category.id} 
+                                    value={category.id}>
+                                        {category.category}
+                                    </option>
+
+                                ))}
                             </select>
                         </div>
 

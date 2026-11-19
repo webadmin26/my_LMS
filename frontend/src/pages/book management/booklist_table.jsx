@@ -4,7 +4,7 @@ import BookInfo from "../../modals/bookManagement/book_info";
 import AddOption from "../../modals/bookManagement/addbook_option";
 import BookShelves from "./book_shelves";
 import SearchOpenLibrary from "../../modals/bookManagement/open_library_search";
-import AddBook from "../../modals/add_book";
+import AddBook from "../../modals/bookManagement/add_book";
 
 function BookManagement() {
   /* Which tab is showing: "books" (table) or "shelves" */

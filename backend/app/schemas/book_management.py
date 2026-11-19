@@ -35,4 +35,10 @@ class BookInfo(BaseModel):
     isbn_10: str | None
     isbn_13: str | None
     copies: list[BookCopyItem]
+    
+# Category Drop down for Add book form
+class CategoryItem(BaseModel):
+    id: int
+    category: str
+
 

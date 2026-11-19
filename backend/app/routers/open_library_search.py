@@ -2,15 +2,18 @@ import httpx
 from functools import lru_cache
 from fastapi import APIRouter, HTTPException
 
-from app.schemas.open_library_search import OpenLibraryBooks
+from app.schemas.open_library_search import OpenLibraryBooks, OpenLibraryBookDescription
 
+# OPEN LIBRARY SEARCH FORM ENDPOINT ROUTER
 router = APIRouter(prefix="/openlibrarysearch", tags=["Open Library Search"])
 
-OPENLIBRARY_SEARCH_URL = "https://openlibrary.org/search.json"
+
+OPENLIBRARY_SEARCH_URL = "https://openlibrary.org/search.json" # Open Library URL for Search form
+OPENLIBRARY_BASE_URL = "https://openlibrary.org" # Open Library URL for book Descriptions
 OPENLIBRARY_HEADERS = {"User-Agent": "LMS Version 1"}
 OPENLIBRARY_FIELDS = "key,title,author_name,first_publish_year,number_of_pages_median,cover_i,editions,editions.isbn,editions.subtitle,editions.publisher"
 
-# Endpoint para sa Open Library Search
+# Endpoint para sa Open Library Search By Option
 @router.get("/search_books", response_model=list[OpenLibraryBooks])
 @lru_cache(maxsize=50) # maximum cache to remember
 def openlibrary(search_by: str, search_text: str, page: int = 1):
@@ -26,7 +29,7 @@ def openlibrary(search_by: str, search_text: str, page: int = 1):
         raise HTTPException(status_code=400, detail="Search by: must be isbn, title or author")
     
     # params = a python dictionary that acts like a container that stores key and values
-    # this params is to collect the setted settings from my searh form and and send to open library at once
+    # this params is to collect the setted settings from my searh form and send to open library at once
     params["fields"] = OPENLIBRARY_FIELDS
     params["limit"] = 50
     params["page"] = page
@@ -73,3 +76,25 @@ def openlibrary(search_by: str, search_text: str, page: int = 1):
         ))
         
     return books
+
+#Endpoint para sa book description ng Add Book form
+@router.get("/description", response_model=OpenLibraryBookDescription)
+def book_description(work_key: str):
+    
+    # Only accept a work key, e.g. "/works/OL45345llf"
+    if not work_key.startswith("/works/"):
+        raise HTTPException(status_code=400, detail="work_key must start with /works/")
+    
+    try:
+        response = httpx.get(f"{OPENLIBRARY_BASE_URL}{work_key}.json",headers=OPENLIBRARY_HEADERS, timeout=20)
+        response.raise_for_status()
+    except httpx.HTTPError:
+        raise HTTPException(status_code=502, detail="Could not reach Open Library")
+    
+    description = response.json().get("description")
+    
+    # Open Library sometimes sends {"type": ..., "value": "text"} instead of plain text
+    if isinstance(description, dict):
+        description = description.get("value")
+        
+    return {"description": description }
