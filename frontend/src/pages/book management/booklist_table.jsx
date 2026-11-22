@@ -21,8 +21,8 @@ function BookManagement() {
   const [addOption, setAddOption] = useState(false);
   const [isOpenLibraryOpen, setIsOpenLibraryOpen] = useState(false);
 
-  /* Backend connection */
-  useEffect(() => {
+  /* Backend connection: load the book list (also called again after a book is added) */
+  const loadBooks = () => {
     fetch("/books")
       .then((response) => {
         if (!response.ok) {
@@ -35,6 +35,10 @@ function BookManagement() {
       /* catch error for backend server failure */
       .catch(() => setError("Cannot load books"))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadBooks();
   }, []);
 
   /* Filter books by status */
@@ -295,7 +299,7 @@ function BookManagement() {
 
       {/* Search form for Open Library */}
     {isOpenLibraryOpen && (
-      <SearchOpenLibrary onClose={() => setIsOpenLibraryOpen(false)}/>
+      <SearchOpenLibrary onClose={() => setIsOpenLibraryOpen(false)} onBookAdded={loadBooks}/>
     )}
 
     {false && <AddBook/>}

@@ -9,7 +9,6 @@ class books_table(Base):
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     book_title: Mapped[str] = mapped_column(String)
     author: Mapped[str] = mapped_column(String)
-    isbn: Mapped[str] = mapped_column(String)
     category_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("categories.id"))
     publisher: Mapped[str] = mapped_column(String)
     publication_year: Mapped[int] = mapped_column(SmallInteger)
@@ -17,7 +16,7 @@ class books_table(Base):
     ddc_number: Mapped[str | None] = mapped_column(String)
     author_number: Mapped[str | None] = mapped_column(String)
     subject_heading: Mapped[str | None] = mapped_column(String)
-    book_cover_image: Mapped[str | None] = mapped_column(Text)
+    book_cover_image: Mapped[str | None] = mapped_column("cover_url",Text)
     description: Mapped[str | None] = mapped_column(Text)
 
 

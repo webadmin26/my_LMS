@@ -11,6 +11,8 @@ class OpenLibraryBooks(BaseModel):
     publication_year: int | None
     pages: int | None
     cover_url: str | None
+    work_key: str # Book Description
+    category: str | None
 
 # Book Description from Open Library
 class OpenLibraryBookDescription(BaseModel):

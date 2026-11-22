@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import AddBook from "./add_book";
 
-function SearchOpenLibrary({ onClose }) {
+function SearchOpenLibrary({ onClose, onBookAdded }) {
   const [searchBy, setSearchBy] = useState("isbn");
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState([]);
@@ -15,6 +15,10 @@ function SearchOpenLibrary({ onClose }) {
   const [searchedBooks, setSearchedBooks] = useState("");
   const [textSearched, setTextSearched] = useState("");
   const [addBook, setAddBook] = useState(null);
+
+  //Pop up modal for successfully saving a copy of the book
+  const [savedBook, setSavedBook] = useState(null);
+
 
   const handleSearch = (evnt) => {
     evnt.preventDefault();
@@ -279,9 +283,48 @@ const handleLoadMore = () => {
         </footer>
       </div>
 
-      {addBook && (
-        <AddBook book={addBook} onClose={() => setAddBook(null)}/>
+      {/* "Book saved" popup: shows the reply from POST /books (BookCreated) */}
+      {savedBook && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div role="dialog" aria-labelledby="saved-title" className="w-full max-w-md overflow-hidden rounded-lg bg-[#E5E5E5]">
+            <div id="saved-title" className="bg-emerald-600 py-1.5 text-center text-[15px] font-bold text-white">
+              BOOK SAVED
+            </div>
+            <div className="px-6 py-4 text-sm text-[#3D3C3A]">
+              <p className="mb-2">
+                <span className="font-bold">{savedBook.book_title}</span> was added with {savedBook.barcodes.length} copies:
+              </p>
+              <ul className="list-disc pl-5">
+                {savedBook.barcodes.map((code) => (
+                  <li key={code}>{code}</li>
+                ))}
+              </ul>
+            </div>
+            <footer className="flex justify-end px-6 py-3">
+              <button
+                type="button"
+                onClick={() => setSavedBook(null)}
+                className="cursor-pointer font-bold text-emerald-600 hover:underline"
+              >
+                OK
+              </button>
+            </footer>
+          </div>
+        </div>
       )}
+
+      {addBook && (
+        <AddBook 
+        book={addBook}
+        onClose={() => setAddBook(null)}
+        onSaved={(data) => {
+          setSavedBook(data); // show the BOOK SAVED popup
+          onBookAdded(); // reload the book table (loadBooks in booklist_table)
+        }}
+        />
+      )}
+
+
     </div>
   );
 }
