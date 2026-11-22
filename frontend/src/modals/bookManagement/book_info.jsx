@@ -117,7 +117,7 @@ function BookInfo({ onClose, libro }) {
           </p>
 
           {/* INVENTORY */}
-          <h3 className="mt-6 bg-[#5B9BD5] py-0.5 text-center font-bold text-white">
+          <h3 className="mt-6 bg-[#3FB584] py-0.5 text-center font-bold text-white">
             INVENTORY
           </h3>
 
@@ -141,18 +141,18 @@ function BookInfo({ onClose, libro }) {
           </div>
 
           {/* COPIES */}
-          <h3 className="mt-2 bg-[#5B9BD5] py-0.5 text-center font-bold text-white">
+          <h3 className="mt-2 bg-[#3FB584] py-0.5 text-center font-bold text-white">
             COPIES
           </h3>
 
           {/* Copies list scrolls on its own; its header stays visible */}
           <div className="max-h-48 overflow-y-auto">
-            <table className="w-full table-fixed text-center text-sm">
+            <table className="w-full table-fixed text-left text-sm">
               <thead>
                 <tr>
-                  <th scope="col" className="sticky top-0 bg-stone-200 py-2 font-normal">BARCODE</th>
-                  <th scope="col" className="sticky top-0 bg-stone-200 py-2 font-normal">SHELF LOCATION</th>
-                  <th scope="col" className="sticky top-0 bg-stone-200 py-2 font-normal">STATUS</th>
+                  <th scope="col" className="sticky top-0 px-4 bg-stone-200 py-2 font-normal">BARCODE</th>
+                  <th scope="col" className="sticky top-0 px-4 bg-stone-200 py-2 font-normal">SHELF LOCATION</th>
+                  <th scope="col" className="sticky top-0 px-4 bg-stone-200 py-2 font-normal">STATUS</th>
                 </tr>
               </thead>
               <tbody>
@@ -162,9 +162,9 @@ function BookInfo({ onClose, libro }) {
                     key={copy.barcode}
                     className={copy.barcode === libro.barcode ? "font-semibold" : ""}
                   >
-                    <td className="py-1">{copy.barcode}</td>
-                    <td className="py-1">{copy.shelf_code ?? "—"}</td>
-                    <td className="py-1 capitalize">{copy.status}</td>
+                    <td className="px-4 py-1">{copy.barcode}</td>
+                    <td className="px-4 py-1">{copy.shelf_code ?? "—"}</td>
+                    <td className="px-4 py-1 capitalize">{copy.status}</td>
                   </tr>
                 ))}
               </tbody>

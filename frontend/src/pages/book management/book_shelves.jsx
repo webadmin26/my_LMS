@@ -137,28 +137,28 @@ useEffect(() => {
 
       {/* Shelves Table */}
       <div className="mt-4 max-h-[70dvh] overflow-auto">
-        <table className="w-full min-w-3xl table-fixed text-center">
+        <table className="w-full min-w-3xl table-fixed text-left">
           <thead className="bg-[#3FB584] text-white sticky top-0 z-10">
             <tr>
-              <th scope="col" className="px-2 py-1 font-normal">
+              <th scope="col" className="px-4 py-1 font-normal">
                 Book Shelf
               </th>
-              <th scope="col" className="px-2 py-1 font-normal">
+              <th scope="col" className="px-4 py-1 font-normal">
                 Location
               </th>
-              <th scope="col" className="px-2 py-1 font-normal">
+              <th scope="col" className="px-4 py-1 font-normal">
                 Section
               </th>
-              <th scope="col" className="px-2 py-1 font-normal">
+              <th scope="col" className="px-4 py-1 font-normal">
                 DDC Range
               </th>
-              <th scope="col" className="px-2 py-1 font-normal">
+              <th scope="col" className="px-4 py-1 font-normal">
                 Used/Max
               </th>
 
               {/* ("ITO AY CONDITION WRAPPER")/ASSIGN Column when ASSIGN MODE IS ACTIVATED, SHOW THIS  */}
               {assignMode && (
-                <th scope="col" className="px-2 py-1 font-normal">
+                <th scope="col" className="px-4 py-1 font-normal">
                   Action
                 </th>
               )}
@@ -182,21 +182,21 @@ useEffect(() => {
                     assignMode ? "" : "cursor-pointer"
                   } ${isSelected ? "bg-emerald-200" : "hover:bg-emerald-100"}`}
                 >
-                  <td className="px-1 py-1 text-sm">{shelf.shelf_code}</td>
-                  <td className="px-1 py-1 text-sm">{shelf.location}</td>
-                  <td className="px-1 py-1 text-sm">{shelf.section_name}</td>
-                  <td className="px-1 py-1 text-sm">
+                  <td className="px-4 py-1 text-sm">{shelf.shelf_code}</td>
+                  <td className="px-4 py-1 text-sm">{shelf.location}</td>
+                  <td className="px-4 py-1 text-sm">{shelf.section_name}</td>
+                  <td className="px-4 py-1 text-sm">
                     {shelf.ddc_start === null
                       ? "—"
                       : `${shelf.ddc_start} - ${shelf.ddc_end}`}
                   </td>
-                  <td className="px-1 py-1 text-sm">
+                  <td className="px-4 py-1 text-sm">
                     {shelf.used}/{shelf.max_capacity ?? "—"}
                   </td>
 
                   {/* CONDITION LINE for Action tab */}
                   {assignMode && (
-                    <td className="px-1 py-1">
+                    <td className="px-4 py-1">
                       <button
                         type="button"
                         onClick={() => {
@@ -216,7 +216,7 @@ useEffect(() => {
 
             {loading && (
                 <tr>
-                  <td colSpan={assignMode ? 6 : 5} role="status" className="py-6">
+                  <td colSpan={assignMode ? 6 : 5} role="status" className="py-6 text-center">
                     <p className="loader mt-3 text-sm font-semibold text-stone-600">Loading shelves...</p>
                   </td>
                 </tr>
@@ -227,7 +227,7 @@ useEffect(() => {
                 <td
                   colSpan={assignMode ? 6 : 5}
                   role="alert"
-                  className="py-6 text-sm text-red-600"
+                  className="py-6 text-center text-sm text-red-600"
                 >
                   {error}
                 </td>

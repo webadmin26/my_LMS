@@ -144,7 +144,7 @@ function BookManagement() {
           </div>
 
           <div className="mt-6 max-h-[70dvh] overflow-auto">
-            <table className="table-fixed w-full min-w-160 text-center">
+            <table className="table-fixed w-full min-w-160 text-left">
               <thead className="bg-emerald-500 text-white">
                 <tr>
                   <th
@@ -200,8 +200,8 @@ function BookManagement() {
                     key={item.barcode}
                     className="border-b border-stone-300 font-semibold text-stone-600 hover:bg-emerald-100 transition-colors"
                   >
-                    <td className="px-1 py-1.5 text-sm">{item.barcode}</td>
-                    <td className="px-1 py-1.5 text-sm whitespace-normal wrap-anywhere">
+                    <td className="px-4 py-1.5 text-sm">{item.barcode}</td>
+                    <td className="px-4 py-1.5 text-sm whitespace-normal wrap-anywhere">
                       <span className="font-semibold text-stone-600">{item.book_title.split(": ")[0]}</span>
                       {item.book_title.includes(": ") && (
                         <span className="block font-medium text-stone-600">
@@ -209,13 +209,13 @@ function BookManagement() {
                         </span>
                       )}
                     </td>
-                    <td className="px-1 py-1.5 text-sm text-stone-600 whitespace-normal wrap-anywhere">
+                    <td className="px-4 py-1.5 text-sm text-stone-600 whitespace-normal wrap-anywhere">
                       {item.author}
                     </td>
-                    <td className="px-1 py-1.5 text-sm text-stone-600 capitalize">
+                    <td className="px-4 py-1.5 text-sm text-stone-600 capitalize">
                       {item.status}
                     </td>
-                    <td>
+                    <td className="px-3">
                       <button
                         type="button"
                         onClick={() => {
@@ -245,7 +245,7 @@ function BookManagement() {
                 {/* Loading message while the books are fetched */}
                 {loading && (
                   <tr>
-                    <td colSpan={5} role="status" className="px-4 py-6">
+                    <td colSpan={5} role="status" className="px-4 py-6 text-center">
                       <p className="loader text-sm text-stone-500">
                         Loading books...
                       </p>
@@ -258,7 +258,7 @@ function BookManagement() {
                   <tr>
                     <td
                       colSpan={5}
-                      className="px-4 py-6 text-sm text-stone-500"
+                      className="px-4 py-6 text-center text-sm text-stone-500"
                     >
                       No book record found in the database.
                     </td>
@@ -268,7 +268,7 @@ function BookManagement() {
                 {/* If backend fails show this conditional error message from "setError useState"*/}
                 {error && (
                   <tr>
-                    <td colSpan={5}>
+                    <td colSpan={5} className="text-center">
                       <p role="alert" className="mt-6 text-sm text-red-600">
                         {error}
                       </p>

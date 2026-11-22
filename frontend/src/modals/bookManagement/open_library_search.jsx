@@ -139,31 +139,31 @@ const handleLoadMore = () => {
 
         {/* Main table for Search Result */}
         <div className="mt-6 mx-8 min-h-0 flex-1 overflow-auto ">
-          <table className="w-full min-w-300 table-fixed text-center">
+          <table className="w-full min-w-300 table-fixed text-left">
             <thead className="sticky top-0 z-10 bg-[#3FB584] text-white">
               <tr>
-                <th scope="col" className="w-30 px-2 py-1 text-sm font-normal">
+                <th scope="col" className="w-30 text-center px-2 py-1 text-sm font-normal">
                   COVER
                 </th>
-                <th scope="col" className="px-2 py-1 text-sm font-normal">
+                <th scope="col" className="px-4 py-1 text-sm font-normal">
                   TITLE
                 </th>
-                <th scope="col" className="px-2 py-1 text-sm font-normal">
+                <th scope="col" className="px-4 py-1 text-sm font-normal">
                   AUTHOR
                 </th>
-                <th scope="col" className="px-2 py-1 text-sm font-normal">
+                <th scope="col" className="px-4 py-1 text-sm font-normal">
                   PUBLISHER
                 </th>
-                <th scope="col" className="px-2 py-1 text-sm font-normal">
+                <th scope="col" className="px-4 py-1 text-sm font-normal">
                   ISBN
                 </th>
-                <th scope="col" className="px-2 py-1 text-sm font-normal">
+                <th scope="col" className="px-4 py-1 text-sm font-normal">
                   PUBLICATION YEAR
                 </th>
-                <th scope="col" className="px-2 py-1 text-sm font-normal">
+                <th scope="col" className="px-4 py-1 text-sm font-normal">
                   NO. OF PAGES
                 </th>
-                <th scope="col" className="w-32 px-2 py-1 text-sm font-normal">
+                <th scope="col" className="w-32 text-center px-2 py-1 text-sm font-normal">
                   ADD
                   <span className="sr-only">Add book</span>
                 </th>
@@ -174,7 +174,7 @@ const handleLoadMore = () => {
               {/* SEARCHING */}
               {searching && (
                 <tr>
-                  <td colSpan={8} role="status" className="px-4 py-6">
+                  <td colSpan={8} role="status" className="px-4 py-6 text-center">
                     <p className="loader text-sm text-stone-500">
                       Searching Open Library...
                     </p>
@@ -185,7 +185,7 @@ const handleLoadMore = () => {
               {/* ERROR SEARCHING */}
               {error && !searching && (
                 <tr>
-                  <td colSpan={8}>
+                  <td colSpan={8} className="text-center">
                     <p role="alert" className="mt-6 text-sm text-red-600">
                       {error}
                     </p>
@@ -196,7 +196,7 @@ const handleLoadMore = () => {
               {/* NO SEARCH MATCH */}
               {hasSearched && !searching && !error && results.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-6 text-sm text-stone-500">
+                  <td colSpan={8} className="px-4 py-6 text-center text-sm text-stone-500">
                     No Books found on Open Library. Try another search or use
                     Manual Add.
                   </td>
@@ -210,7 +210,7 @@ const handleLoadMore = () => {
                     key={index}
                     className="border-b border-stone-400 text-sm text-stone-600 transition-colors hover:bg-emerald-100"
                   >
-                    <td className="px-2 py-1">
+                    <td className="px-2 py-1 text-center">
                       {book.cover_url ? (
                         <img
                           src={book.cover_url}
@@ -222,7 +222,7 @@ const handleLoadMore = () => {
                         "-"
                       )}
                     </td>
-                    <td className="px-2 py-1">
+                    <td className="px-4 py-1">
                       <div className="font-semibold">{book.book_title}</div>
                       {book.sub_title && (
                         <div className="text-sm text-stone-500">
@@ -230,18 +230,18 @@ const handleLoadMore = () => {
                         </div>
                       )}
                     </td>
-                    <td className="px-2 py-1">{book.author ?? "—"}</td>
-                    <td className="px-2 py-1">{book.publisher ?? "—"}</td>
-                    <td className="px-2 py-1">
+                    <td className="px-4 py-1">{book.author ?? "—"}</td>
+                    <td className="px-4 py-1">{book.publisher ?? "—"}</td>
+                    <td className="px-4 py-1">
                       <div>{book.isbn_10 ?? "—"}</div>
                       <div>{book.isbn_13 ?? "—"}</div>
                     </td>
-                    <td className="px-2 py-1">
+                    <td className="px-4 py-1">
                       {book.publication_year ?? "—"}
                     </td>
-                    <td className="px-2 py-1">{book.pages ?? "—"}</td>
+                    <td className="px-4 py-1">{book.pages ?? "—"}</td>
 
-                    <td className="px-2 py-1">
+                    <td className="px-2 py-1 text-center">
                       <button
                         type="button"
                         onClick={() => setAddBook(book)}

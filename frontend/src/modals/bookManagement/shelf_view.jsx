@@ -134,34 +134,34 @@ function ShelfView({ onClose, viewShelf, onRemoved }) {
 
         {/* Table Layout */}
         <div className="max-h-[70dvh] overflow-auto mx-4 mt-4">
-          <table className="w-full min-w-248 table-fixed text-center">
+          <table className="w-full min-w-248 table-fixed text-left">
             <thead className="bg-[#3FB584] text-white sticky top-0 z-10">
               <tr>
                 <th
                   scope="col"
-                  className="w-15 px-3.5 py-1 font-normal text-sm"
+                  className="w-15 text-center px-3.5 py-1 font-normal text-sm"
                 >
                   SELECT
                 </th>
-                <th scope="col" className="px-2 py-1 font-normal text-sm">
+                <th scope="col" className="px-4 py-1 font-normal text-sm">
                   BOOK ID
                 </th>
-                <th scope="col" className="px-2 py-1 w-[30%] font-normal text-sm">
+                <th scope="col" className="px-4 py-1 w-[30%] font-normal text-sm">
                   TITLE
                 </th>
-                <th scope="col" className="px-2 py-1 font-normal text-sm">
+                <th scope="col" className="px-4 py-1 font-normal text-sm">
                   AUTHOR
                 </th>
-                <th scope="col" className="px-2 py-1 font-normal text-sm">
+                <th scope="col" className="px-4 py-1 font-normal text-sm">
                   CATEGORY
                 </th>
-                <th scope="col" className="px-2 py-1 font-normal text-sm">
+                <th scope="col" className="px-4 py-1 font-normal text-sm">
                   ISBN
                 </th>
-                <th scope="col" className="px-2 py-1 font-normal text-sm text-nowrap">
+                <th scope="col" className="px-4 py-1 font-normal text-sm text-nowrap">
                   YEAR PUBLISHED
                 </th>
-                <th scope="col" className="px-2 py-1 font-normal text-sm">
+                <th scope="col" className="px-4 py-1 font-normal text-sm">
                   PAGES
                 </th>
               </tr>
@@ -172,7 +172,7 @@ function ShelfView({ onClose, viewShelf, onRemoved }) {
                   key={books.barcode}
                   className="border-b border-stone-300 font-semibold transition-colors hover:bg-emerald-100"
                 >
-                  <td className="px-3.5 py-1.5">
+                  <td className="px-3.5 text-center py-1.5">
                     <input
                       type="checkbox"
                       aria-label={`Select ${books.barcode}`}
@@ -189,8 +189,8 @@ function ShelfView({ onClose, viewShelf, onRemoved }) {
                       className="size-4 cursor-pointer align-middle accent-emerald-600"
                     />
                   </td>
-                  <td className="px-1 py-1.5 text-sm">{books.barcode}</td>
-                  <td className="px-1 py-1.5 text-sm whitespace-normal wrap-anywhere">
+                  <td className="px-4 py-1.5 text-sm">{books.barcode}</td>
+                  <td className="px-4 py-1.5 text-sm whitespace-normal wrap-anywhere">
                     {/* Main title (before ": ") semibold, subtitle on its own line */}
                     <span className="font-semibold">{books.book_title.split(": ")[0]}</span>
                     {books.book_title.includes(": ") && (
@@ -199,24 +199,24 @@ function ShelfView({ onClose, viewShelf, onRemoved }) {
                       </span>
                     )}
                   </td>
-                  <td className="px-1 py-1.5 text-sm whitespace-normal wrap-anywhere">
+                  <td className="px-4 py-1.5 text-sm whitespace-normal wrap-anywhere">
                     {books.author}
                   </td>
-                  <td className="px-1 py-1.5 text-sm">{books.category}</td>
-                  <td className="px-1 py-1.5 text-sm">
+                  <td className="px-4 py-1.5 text-sm">{books.category}</td>
+                  <td className="px-4 py-1.5 text-sm">
                     <div>{books.isbn_10}</div>
                     <div>{books.isbn_13}</div>
                   </td>
-                  <td className="px-1 py-1.5 text-sm">
+                  <td className="px-4 py-1.5 text-sm">
                     {books.publication_year}
                   </td>
-                  <td className="px-1 py-1.5 text-sm">{books.pages ?? "—"}</td>
+                  <td className="px-4 py-1.5 text-sm">{books.pages ?? "—"}</td>
                 </tr>
               ))}
 
               {loading && (
                 <tr>
-                  <td colSpan={8} role="status" className="py-6">
+                  <td colSpan={8} role="status" className="py-6 text-center">
                     <p className="loader text-sm font-semibold text-stone-600">
                       Loading books...
                     </p>
@@ -227,7 +227,7 @@ function ShelfView({ onClose, viewShelf, onRemoved }) {
               {/* Empty shelf / no search match */}
               {visibleBooks.length === 0 && !loading && !error && (
                 <tr>
-                  <td colSpan={8} className="py-6 text-sm text-stone-500">
+                  <td colSpan={8} className="py-6 text-center text-sm text-stone-500">
                     {shelfBooks.length === 0
                       ? "No books on this shelf yet."
                       : showSelected
@@ -243,7 +243,7 @@ function ShelfView({ onClose, viewShelf, onRemoved }) {
                   <td
                     colSpan={8}
                     role="alert"
-                    className="py-6 text-sm text-red-600"
+                    className="py-6 text-center text-sm text-red-600"
                   >
                     {error}
                   </td>
