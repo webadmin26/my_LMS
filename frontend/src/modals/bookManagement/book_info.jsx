@@ -23,6 +23,9 @@ function BookInfo({ onClose, libro }) {
     ...copies.filter((copy) => copy.barcode === libro.barcode),
     ...copies.filter((copy) => copy.barcode !== libro.barcode),
   ];
+  
+  //Full title: details from the backend, or the table row while loading
+  const fullTitle = bookDetails?.book_title ?? libro.book_title;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -47,12 +50,12 @@ function BookInfo({ onClose, libro }) {
           )}
 
           {/* COVER + BOOK DETAILS */}
-          <div className="grid gap-6 sm:grid-cols-[180px_minmax(0,1fr)]">
+          <div className="grid gap-6 sm:grid-cols-[200px_minmax(0,1fr)]">
             {bookDetails?.book_cover_image ? (
               <img
                 src={bookDetails.book_cover_image}
                 alt={`Cover of ${bookDetails.book_title}`}
-                className="mx-auto h-40 w-28 border border-stone-400 object-cover"
+                className="mx-auto h-65 w-50 mt-5 mr-2 object-contain"
               />
             ) : (
               <div className="mx-auto flex h-40 w-28 items-center justify-center border border-stone-400 bg-stone-100 text-xs text-stone-500">
@@ -61,11 +64,18 @@ function BookInfo({ onClose, libro }) {
             )}
 
             <div className="flex flex-col gap-4 text-sm">
-              <dl className="grid grid-cols-[150px_minmax(0,1fr)] gap-x-3">
+              <dl className="grid grid-cols-[150px_minmax(0,1fr)] gap-x-3 gap-y-2">
                 <dt>Book ID</dt>
                 <dd>{bookDetails?.barcode ?? "—"}</dd>
                 <dt>Title</dt>
-                <dd>{bookDetails?.book_title ?? libro.book_title}</dd>
+                                <dd>
+                  <span className="font-semibold">{fullTitle.split(": ")[0]}</span>
+                  {fullTitle.includes(": ") && (
+                    <span className="block font-medium">
+                      {fullTitle.split(": ").slice(1).join(": ")}
+                    </span>
+                  )}
+                </dd>
                 <dt>Author</dt>
                 <dd>{bookDetails?.author ?? libro.author}</dd>
               </dl>
@@ -167,7 +177,7 @@ function BookInfo({ onClose, libro }) {
           {/* Loading message (bottom of the modal, always visible) */}
           {!bookDetails && !error && (
             <div className="mb-5">
-              <p role="status" className="loader text-sm font-semibold text-[#3D3C3A]">
+              <p role="status" className="loader text-sm font-semibold text-stone-600">
                 Loading book information...
               </p>
             </div>
@@ -175,7 +185,7 @@ function BookInfo({ onClose, libro }) {
           <button
             type="button"
             onClick={onClose}
-            className="cursor-pointer font-bold text-[#3D3C3A] hover:underline"
+            className="cursor-pointer font-bold text-stone-600 hover:underline"
           >
             CLOSE
           </button>

@@ -79,13 +79,13 @@ function BookManagement() {
           <button
             type="button"
             onClick={() => setAddOption(true)}
-            className="cursor-pointer px-3 py-1 font-semibold text-[#3D3C3A] text-sm hover:text-emerald-600 transition-colors duration-150"
+            className="cursor-pointer px-3 py-1 font-semibold text-stone-600 text-sm hover:text-emerald-600 transition-colors duration-150"
           >
             ADD BOOK
           </button>
           <button
             type="button"
-            className="cursor-pointer px-3 py-1 font-semibold text-sm text-[#3D3C3A] hover:text-emerald-600 transition-colors duration-150"
+            className="cursor-pointer px-3 py-1 font-semibold text-sm text-stone-600 hover:text-emerald-600 transition-colors duration-150"
           >
             PRINT BARCODE
           </button>
@@ -99,7 +99,7 @@ function BookManagement() {
             className={`cursor-pointer px-3 py-1 font-semibold text-sm hover:text-emerald-600 transition-colors duration-150 ${
               activeTab === "shelves"
                 ? "text-emerald-600 underline underline-offset-4"
-                : "text-[#3D3C3A]"
+                : "text-stone-600"
             }`}
           >
             BOOK SHELVES
@@ -155,13 +155,13 @@ function BookManagement() {
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-1 font-normal sticky top-0 z-10 bg-emerald-500"
+                    className="px-4 py-1 font-normal sticky top-0 z-10 w-[30%] bg-emerald-500"
                   >
                     Title
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-1 font-normal sticky top-0 z-10 bg-emerald-500"
+                    className="px-4 py-1 font-normal sticky top-0 z-10 w-[20%] bg-emerald-500"
                   >
                     Author
                   </th>
@@ -198,16 +198,21 @@ function BookManagement() {
                 {sortedBooks.map((item) => (
                   <tr
                     key={item.barcode}
-                    className="border-b border-stone-300 font-semibold hover:bg-emerald-100 transition-colors"
+                    className="border-b border-stone-300 font-semibold text-stone-600 hover:bg-emerald-100 transition-colors"
                   >
-                    <td className="px-1 py-1.5 text-xs">{item.barcode}</td>
-                    <td className="px-1 py-1.5 text-xs whitespace-normal wrap-anywhere">
-                      {item.book_title}
+                    <td className="px-1 py-1.5 text-sm">{item.barcode}</td>
+                    <td className="px-1 py-1.5 text-sm whitespace-normal wrap-anywhere">
+                      <span className="font-semibold text-stone-600">{item.book_title.split(": ")[0]}</span>
+                      {item.book_title.includes(": ") && (
+                        <span className="block font-medium text-stone-600">
+                          {item.book_title.split(": ").slice(1).join(": ")}
+                        </span>
+                      )}
                     </td>
-                    <td className="px-1 py-1.5 text-xs whitespace-normal wrap-anywhere">
+                    <td className="px-1 py-1.5 text-sm text-stone-600 whitespace-normal wrap-anywhere">
                       {item.author}
                     </td>
-                    <td className="px-1 py-1.5 text-xs capitalize">
+                    <td className="px-1 py-1.5 text-sm text-stone-600 capitalize">
                       {item.status}
                     </td>
                     <td>
@@ -217,19 +222,19 @@ function BookManagement() {
                           setIsBookInfoOpen(true);
                           setSelectedBook(item);
                         }}
-                        className="cursor-pointer px-1 py-0.5 text-xs font-semibold text-[#3D3C3A] hover:underline"
+                        className="cursor-pointer px-1 py-0.5 text-sm font-semibold text-stone-600 hover:underline"
                       >
                         View
                       </button>
                       <button
                         type="button"
-                        className="cursor-pointer px-1 py-0.5 text-xs font-semibold text-[#3D3C3A] hover:underline"
+                        className="cursor-pointer px-1 py-0.5 text-sm font-semibold text-stone-600 hover:underline"
                       >
                         Edit
                       </button>
                       <button
                         type="button"
-                        className="cursor-pointer px-1 py-0.5 text-xs font-semibold text-[#3D3C3A] hover:underline"
+                        className="cursor-pointer px-1 py-0.5 text-sm font-semibold text-stone-600 hover:underline"
                       >
                         Delete
                       </button>

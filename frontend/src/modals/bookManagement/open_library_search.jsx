@@ -90,7 +90,7 @@ const handleLoadMore = () => {
           <div className="flex items-center gap-2">
             <label
               htmlFor="ol-search-by"
-              className="text-sm font-semibold text-[#3D3C3A]"
+              className="text-sm font-semibold text-stone-600"
             >
               Search by:
             </label>
@@ -109,7 +109,7 @@ const handleLoadMore = () => {
           <div className="flex items-center gap-2">
             <label
               htmlFor="search-text"
-              className="text-sm font-semibold text-[#3D3C3A]"
+              className="text-sm font-semibold text-stone-600"
             >
               Search books:
             </label>
@@ -208,7 +208,7 @@ const handleLoadMore = () => {
                 results.map((book, index) => (
                   <tr
                     key={index}
-                    className="border-b border-stone-400 text-sm text-[#3D3C3A] transition-colors hover:bg-emerald-100"
+                    className="border-b border-stone-400 text-sm text-stone-600 transition-colors hover:bg-emerald-100"
                   >
                     <td className="px-2 py-1">
                       {book.cover_url ? (
@@ -276,7 +276,7 @@ const handleLoadMore = () => {
           <button
             type="button"
             onClick={onClose}
-            className="cursor-pointer font-bold text-[#3D3C3A] hover:underline"
+            className="cursor-pointer font-bold text-stone-600 hover:underline"
           >
             CLOSE
           </button>
@@ -290,7 +290,7 @@ const handleLoadMore = () => {
             <div id="saved-title" className="bg-emerald-600 py-1.5 text-center text-[15px] font-bold text-white">
               BOOK SAVED
             </div>
-            <div className="px-6 py-4 text-sm text-[#3D3C3A]">
+            <div className="px-6 py-4 text-sm text-stone-600">
               <p className="mb-2">
                 <span className="font-bold">{savedBook.book_title}</span> was added with {savedBook.barcodes.length} copies:
               </p>

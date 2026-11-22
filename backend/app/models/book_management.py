@@ -7,7 +7,7 @@ class books_table(Base):
     __tablename__ = "books"
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    book_title: Mapped[str] = mapped_column(String)
+    book_title: Mapped[str] = mapped_column(Text)
     author: Mapped[str] = mapped_column(String)
     category_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("categories.id"))
     publisher: Mapped[str] = mapped_column(String)

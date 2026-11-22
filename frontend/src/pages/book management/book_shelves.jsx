@@ -182,15 +182,15 @@ useEffect(() => {
                     assignMode ? "" : "cursor-pointer"
                   } ${isSelected ? "bg-emerald-200" : "hover:bg-emerald-100"}`}
                 >
-                  <td className="px-1 py-1 text-xs">{shelf.shelf_code}</td>
-                  <td className="px-1 py-1 text-xs">{shelf.location}</td>
-                  <td className="px-1 py-1 text-xs">{shelf.section_name}</td>
-                  <td className="px-1 py-1 text-xs">
+                  <td className="px-1 py-1 text-sm">{shelf.shelf_code}</td>
+                  <td className="px-1 py-1 text-sm">{shelf.location}</td>
+                  <td className="px-1 py-1 text-sm">{shelf.section_name}</td>
+                  <td className="px-1 py-1 text-sm">
                     {shelf.ddc_start === null
                       ? "—"
                       : `${shelf.ddc_start} - ${shelf.ddc_end}`}
                   </td>
-                  <td className="px-1 py-1 text-xs">
+                  <td className="px-1 py-1 text-sm">
                     {shelf.used}/{shelf.max_capacity ?? "—"}
                   </td>
 
@@ -217,7 +217,7 @@ useEffect(() => {
             {loading && (
                 <tr>
                   <td colSpan={assignMode ? 6 : 5} role="status" className="py-6">
-                    <p className="loader mt-3 text-sm font-semibold text-[#3D3C3A]">Loading shelves...</p>
+                    <p className="loader mt-3 text-sm font-semibold text-stone-600">Loading shelves...</p>
                   </td>
                 </tr>
               )}

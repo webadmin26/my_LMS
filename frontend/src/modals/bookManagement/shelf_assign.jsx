@@ -71,7 +71,7 @@ function ShelfAssign({ onClose, assignShelf, onSaved }) {
         <div className="mx-4 mt-4 flex flex-wrap items-center gap-2">
           <label
             htmlFor="search-copy"
-            className="text-sm font-semibold text-[#3D3C3A]"
+            className="text-sm font-semibold text-stone-600"
           >
             Search Books:
           </label>
@@ -114,7 +114,7 @@ function ShelfAssign({ onClose, assignShelf, onSaved }) {
           {saving && (
             <div role="status" className="ml-auto flex items-center gap-2 pr-2">
               <span className="size-4 animate-spin rounded-full border-2 border-emerald-600 border-t-transparent" />
-              <span className="text-lg font-semibold text-[#3D3C3A]">
+              <span className="text-lg font-semibold text-stone-600">
                 Saving...
               </span>
             </div>
@@ -135,7 +135,7 @@ function ShelfAssign({ onClose, assignShelf, onSaved }) {
                 <th scope="col" className="px-2 py-1 font-normal text-sm">
                   BOOK ID
                 </th>
-                <th scope="col" className="px-2 py-1 font-normal text-sm">
+                <th scope="col" className="px-2 py-1 w-[30%] font-normal text-sm">
                   TITLE
                 </th>
                 <th scope="col" className="px-2 py-1 font-normal text-sm">
@@ -147,11 +147,11 @@ function ShelfAssign({ onClose, assignShelf, onSaved }) {
                 <th scope="col" className="px-2 py-1 font-normal text-sm">
                   ISBN
                 </th>
-                <th scope="col" className="px-2 py-1 font-normal text-sm">
-                  PUBLICATION YEAR
+                <th scope="col" className="px-2 py-1 font-normal text-sm text-nowrap">
+                  YEAR PUBLISHED
                 </th>
                 <th scope="col" className="px-2 py-1 font-normal text-sm">
-                  NO. OF PAGES
+                  PAGES
                 </th>
               </tr>
             </thead>
@@ -177,29 +177,35 @@ function ShelfAssign({ onClose, assignShelf, onSaved }) {
                       className="size-4 cursor-pointer align-middle accent-emerald-600"
                     />
                   </td>
-                  <td className="px-1 py-1.5 text-xs">{books.barcode}</td>
-                  <td className="px-1 py-1.5 text-xs whitespace-normal wrap-anywhere">
-                    {books.book_title}
+                  <td className="px-1 py-1.5 text-sm">{books.barcode}</td>
+                  <td className="px-1 py-1.5 text-sm whitespace-normal wrap-anywhere">
+                    {/* Main title (before ": ") semibold, subtitle on its own line */}
+                    <span className="font-semibold">{books.book_title.split(": ")[0]}</span>
+                    {books.book_title.includes(": ") && (
+                      <span className="block font-light">
+                        {books.book_title.split(": ").slice(1).join(": ")}
+                      </span>
+                    )}
                   </td>
-                  <td className="px-1 py-1.5 text-xs whitespace-normal wrap-anywhere">
+                  <td className="px-1 py-1.5 text-sm whitespace-normal wrap-anywhere">
                     {books.author}
                   </td>
-                  <td className="px-1 py-1.5 text-xs">{books.category}</td>
-                  <td className="px-1 py-1.5 text-xs">
-                    <div>ISBN-10: {books.isbn_10}</div>
-                    <div>ISBN-13: {books.isbn_13}</div>
+                  <td className="px-1 py-1.5 text-sm">{books.category}</td>
+                  <td className="px-1 py-1.5 text-sm">
+                    <div>{books.isbn_10}</div>
+                    <div>{books.isbn_13}</div>
                   </td>
-                  <td className="px-1 py-1.5 text-xs">
+                  <td className="px-1 py-1.5 text-sm">
                     {books.publication_year}
                   </td>
-                  <td className="px-1 py-1.5 text-xs">{books.pages ?? "—"}</td>
+                  <td className="px-1 py-1.5 text-sm">{books.pages ?? "—"}</td>
                 </tr>
               ))}
 
               {loading && (
                 <tr>
                   <td colSpan={8} role="status" className="py-6">
-                    <p className="loader mt-3 text-sm font-semibold text-[#3D3C3A]">
+                    <p className="loader mt-3 text-sm font-semibold text-stone-600">
                       Loading books...
                     </p>
                   </td>
@@ -236,7 +242,7 @@ function ShelfAssign({ onClose, assignShelf, onSaved }) {
           {/* Selected books counter */}
           <p
             aria-live="polite"
-            className="mr-auto text-sm font-semibold text-[#3D3C3A]"
+            className="mr-auto text-sm font-semibold text-stone-600"
           >
             Selected:{" "}
             <span className="text-emerald-600">{selectedShelfBooks.length}</span>{" "}
@@ -245,7 +251,7 @@ function ShelfAssign({ onClose, assignShelf, onSaved }) {
           <button
             type="button"
             onClick={onClose}
-            className="cursor-pointer text-sm font-bold text-[#3D3C3A] hover:underline"
+            className="cursor-pointer text-sm font-bold text-stone-600 hover:underline"
           >
             CLOSE
           </button>

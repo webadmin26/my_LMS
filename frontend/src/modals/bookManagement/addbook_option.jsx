@@ -7,14 +7,14 @@ function AddOption( {onClose, onConfirm} ) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="w-full max-w-sm rounded-lg bg-[#E5E5E5] p-5 shadow-lg">
         <fieldset>
-          <legend className="text-base font-semibold text-[#3D3C3A]">
+          <legend className="text-base font-semibold text-stone-600">
             Select how you want to add the book
           </legend>
 
           <div className="mt-3 space-y-1">
             {/* RADIO BUTTON 1 */}
             <label
-            className="flex cursor-pointer items-center gap-3 rounded px-3 py-2 text-sm text-[#3D3C3A] transition-colors hover:bg-emerald-100 has-checked:bg-emerald-100 has-checked:font-semibold"
+            className="flex cursor-pointer items-center gap-3 rounded px-3 py-2 text-sm text-stone-600 transition-colors hover:bg-emerald-100 has-checked:bg-emerald-100 has-checked:font-semibold"
             >
               <input
                 type="radio"
@@ -29,7 +29,7 @@ function AddOption( {onClose, onConfirm} ) {
 
             {/* RADIO BUTTON 2 */}
             <label
-            className="flex cursor-pointer items-center gap-3 rounded px-3 py-2 text-sm text-[#3D3C3A] transition-colors hover:bg-emerald-100 has-checked:bg-emerald-100 has-checked:font-semibold"
+            className="flex cursor-pointer items-center gap-3 rounded px-3 py-2 text-sm text-stone-600 transition-colors hover:bg-emerald-100 has-checked:bg-emerald-100 has-checked:font-semibold"
             >
               <input
                 type="radio"
@@ -49,7 +49,7 @@ function AddOption( {onClose, onConfirm} ) {
             <button
             type="button"
             onClick={onClose}
-            className="cursor-pointer text-sm font-bold text-[#3D3C3A] hover:underline"
+            className="cursor-pointer text-sm font-bold text-stone-600 hover:underline"
             >
                 CANCEL
             </button>

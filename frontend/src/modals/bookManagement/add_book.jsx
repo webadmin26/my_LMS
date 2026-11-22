@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 function AddBook( {book, onClose, onSaved} ){
-    const labelStyle = "block text-sm text-[#3D3C3A]";
+    const labelStyle = "block text-sm text-stone-600";
     const inputStyle = "w-full bg-white px-2 py-1 text-sm focus:outline-2 focus:outline-emerald-500";
-    const headingStyle = "mb-4 text-xl text-[#3D3C3A] underline underline-offset-4";
+    const headingStyle = "mb-4 text-xl text-stone-600 underline underline-offset-4";
     const fieldGap = "mb-3";
 
     // USESTATE FOR FETCHING THE BOOK INFORMATION FROM OPEN LIBRARY TO ADD FORM, THE ADD FORM WILL BE AUTOMATICALLY FILLED UP
@@ -166,7 +166,7 @@ function AddBook( {book, onClose, onSaved} ){
                             </div>
                             <button
                                 type="button"
-                                className="mt-1 cursor-pointer text-sm font-bold text-[#3D3C3A] hover:underline"
+                                className="mt-1 cursor-pointer text-sm font-bold text-stone-600 hover:underline"
                             >
                                 UPLOAD COVER
                             </button>
@@ -251,7 +251,7 @@ function AddBook( {book, onClose, onSaved} ){
 
                     {/* No. of copies: small box */}
                     <div className="mb-6">
-                        <label htmlFor="copies_number" className="block text-sm font-bold text-[#3D3C3A]">NO. OF COPIES</label>
+                        <label htmlFor="copies_number" className="block text-sm font-bold text-stone-600">NO. OF COPIES</label>
                         <input 
                         id="copies_number" 
                         type="number" 
@@ -305,7 +305,7 @@ function AddBook( {book, onClose, onSaved} ){
                     <button
                         type="button"
                         onClick={onClose}
-                        className="cursor-pointer font-bold text-[#3D3C3A] hover:underline"
+                        className="cursor-pointer font-bold text-stone-600 hover:underline"
                     >
                         CANCEL
                     </button>
