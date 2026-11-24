@@ -10,6 +10,7 @@ export default defineConfig({
       "/books": "http://127.0.0.1:8000",
       "/shelves": "http://127.0.0.1:8000",
       "/openlibrarysearch": "http://127.0.0.1:8000",
+      "/uploads": "http://127.0.0.1:8000",
     },
   },
 })

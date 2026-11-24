@@ -33,3 +33,5 @@ __pycache__/
 Thumbs.db
 
 graphify-out/
+
+backend/uploads/

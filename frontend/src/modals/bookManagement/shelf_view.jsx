@@ -146,7 +146,7 @@ function ShelfView({ onClose, viewShelf, onRemoved }) {
                 <th scope="col" className="px-4 py-1 font-normal text-sm">
                   BOOK ID
                 </th>
-                <th scope="col" className="px-4 py-1 w-[30%] font-normal text-sm">
+                <th scope="col" className="px-4 py-1 w-[25%] font-normal text-sm">
                   TITLE
                 </th>
                 <th scope="col" className="px-4 py-1 font-normal text-sm">

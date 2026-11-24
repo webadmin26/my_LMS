@@ -20,6 +20,7 @@ function BookManagement() {
   const [loading, setLoading] = useState(true);
   const [addOption, setAddOption] = useState(false);
   const [isOpenLibraryOpen, setIsOpenLibraryOpen] = useState(false);
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   /* Backend connection: load the book list (also called again after a book is added) */
   const loadBooks = () => {
@@ -202,7 +203,9 @@ function BookManagement() {
                   >
                     <td className="px-4 py-1.5 text-sm">{item.barcode}</td>
                     <td className="px-4 py-1.5 text-sm whitespace-normal wrap-anywhere">
-                      <span className="font-semibold text-stone-600">{item.book_title.split(": ")[0]}</span>
+                      <span className="font-semibold text-stone-600">
+                        {item.book_title.split(": ")[0]}
+                      </span>
                       {item.book_title.includes(": ") && (
                         <span className="block font-medium text-stone-600">
                           {item.book_title.split(": ").slice(1).join(": ")}
@@ -245,7 +248,11 @@ function BookManagement() {
                 {/* Loading message while the books are fetched */}
                 {loading && (
                   <tr>
-                    <td colSpan={5} role="status" className="px-4 py-6 text-center">
+                    <td
+                      colSpan={5}
+                      role="status"
+                      className="px-4 py-6 text-center"
+                    >
                       <p className="loader text-sm text-stone-500">
                         Loading books...
                       </p>
@@ -292,22 +299,33 @@ function BookManagement() {
       {/* Add Book Option Select */}
       {addOption && (
         <AddOption
-        onClose={() => setAddOption(false)}
-        onConfirm={(pickedOption) => {
-          setAddOption(false);
-          if (pickedOption === "openlibrary") {
-            setIsOpenLibraryOpen(true);
-          }
-        }}
+          onClose={() => setAddOption(false)}
+          onConfirm={(pickedOption) => {
+            setAddOption(false);
+            if (pickedOption === "openlibrary") {
+              setIsOpenLibraryOpen(true);
+            } else if (pickedOption === "manual") {
+              setIsAddFormOpen(true);
+            }
+          }}
         />
       )}
 
       {/* Search form for Open Library */}
-    {isOpenLibraryOpen && (
-      <SearchOpenLibrary onClose={() => setIsOpenLibraryOpen(false)} onBookAdded={loadBooks}/>
-    )}
+      {isOpenLibraryOpen && (
+        <SearchOpenLibrary
+          onClose={() => setIsOpenLibraryOpen(false)}
+          onBookAdded={loadBooks}
+        />
+      )}
 
-    {false && <AddBook/>}
+      {/* Manual Add Form */}
+      {isAddFormOpen && (
+        <AddBook
+          onClose={() => setIsAddFormOpen(false)}
+          onSaved={() => loadBooks()}
+        />
+      )}
     </section>
   );
 }

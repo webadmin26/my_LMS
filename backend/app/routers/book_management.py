@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy import select, func, cast, Integer
 from sqlalchemy.orm import Session
 from datetime import date, datetime, timezone
 from sqlalchemy.exc import IntegrityError # an error Postgresql use to raise error
+from pathlib import Path
+import uuid
 
 from app.database import get_db
 from app.models.book_management import books_table, book_copies_table, categories_table, isbn_table
@@ -11,6 +13,9 @@ from app.schemas.book_management import BookListItem, BookInfo, CategoryItem, Bo
 
 router = APIRouter(prefix="/books", tags=["Books"])
 
+COVER_FOLDER = Path(__file__).resolve().parents[2] / "uploads" / "covers"
+COVER_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
+MAX_COVER_SIZE = 10 * 1024 * 1024
 
 # Endpoint para sa Book Management table
 @router.get("", response_model=list[BookListItem])
@@ -133,6 +138,22 @@ def add_book(new_book: BookCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=409, detail="A barcode already exists. Please try saving again.")
     
     return {"id": book.id, "book_title": book.book_title, "barcodes": barcodes}
+
+# Endpoint para sa Pag Upload ng Book Cover
+@router.post("/cover", status_code=201)
+async def book_cover(image: UploadFile = File(...)):
+    extension = COVER_TYPES.get(image.content_type)
+    if extension is None:
+        raise HTTPException(status_code=400, detail="Failed to upload cover picture")
+    
+    data = await image.read()
+    if len(data) > MAX_COVER_SIZE:
+        raise HTTPException(status_code=400, detail="Maximum file size of 10MB only")
+    
+    file_name = f"{uuid.uuid4().hex}{extension}" #Universally unique identifier
+    (COVER_FOLDER / file_name).write_bytes(data)
+    
+    return {"cover_url": f"/uploads/covers/{file_name}"}
                     
 # Endpoint para sa book_info modal
 @router.get("/{barcode}", response_model=BookInfo)

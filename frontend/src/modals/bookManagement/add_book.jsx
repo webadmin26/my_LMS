@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function AddBook( {book, onClose, onSaved} ){
     const labelStyle = "block text-sm text-stone-600";
@@ -32,6 +32,21 @@ function AddBook( {book, onClose, onSaved} ){
     // Saving the Book (ADD Book button)
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
+
+    // BOOK SAVED popup (holds the reply from POST /books; null = show the form)
+    const [savedBook, setSavedBook] = useState(null);
+
+    //Uploading book cover
+    const [selectCover, setSelectCover] = useState(null);
+    const [previewCover, setPreviewCover] = useState(null);
+    const coverInputRef = useRef(null);
+
+    const selectBookCover = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setSelectCover(file);
+        setPreviewCover(URL.createObjectURL(file));
+    }; 
 
 
     // Load the categories once, when the form opens
@@ -76,7 +91,24 @@ function AddBook( {book, onClose, onSaved} ){
         setSaving(true);
         setError(null);
 
-        fetch("/books", {
+        let coverURL;
+        if (selectCover) {
+            const formData = new FormData();
+            formData.append("image", selectCover);
+
+            coverURL = fetch("/books/cover", {method: "POST", body: formData})
+            .then(async (response) => {
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(typeof data.detail === "string" ? data.detail : "Failed to upload the cover.");
+                }
+                return data.cover_url;
+            });
+        } else {
+            coverURL = Promise.resolve(book?.cover_url ?? null);
+        }
+
+        coverURL.then((coverLink) => fetch("/books", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -91,10 +123,10 @@ function AddBook( {book, onClose, onSaved} ){
                 ddc_number: ddcNumber,
                 author_number: authorNumber,
                 subject_heading: subjectHeading,
-                book_cover_image: book?.cover_url ?? null,
+                book_cover_image: coverLink,
                 copies: Number(copies),              
             }),
-        })
+        }))
             .then(async (response) => {
                 const data = await response.json();
                 if (!response.ok) {
@@ -104,12 +136,45 @@ function AddBook( {book, onClose, onSaved} ){
             })
 
             .then((data) => {
-                onSaved(data);
-                onClose();
+                setSavedBook(data); // swap the form for the BOOK SAVED popup
+                onSaved(data);      // tell the parent (reloads the book table)
             })
             .catch((error) => setError(error.message))
             .finally(() => setSaving(false));
     };
+
+    // After saving: show the BOOK SAVED popup instead of the form
+    // (must stay BELOW all useState/useEffect lines)
+    if (savedBook) {
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                <div role="dialog" aria-labelledby="saved-title" className="w-full max-w-md overflow-hidden rounded-lg bg-[#E5E5E5]">
+                    <div id="saved-title" className="bg-emerald-600 py-1.5 text-center text-[15px] font-bold text-white">
+                        BOOK SAVED
+                    </div>
+                    <div className="px-6 py-4 text-sm text-stone-600">
+                        <p className="mb-2">
+                            <span className="font-bold">{savedBook.book_title}</span> was added with {savedBook.barcodes.length} copies:
+                        </p>
+                        <ul className="list-disc pl-5">
+                            {savedBook.barcodes.map((code) => (
+                                <li key={code}>{code}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    <footer className="flex justify-end px-6 py-3">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="cursor-pointer font-bold text-emerald-600 hover:underline"
+                        >
+                            OK
+                        </button>
+                    </footer>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -159,17 +224,33 @@ function AddBook( {book, onClose, onSaved} ){
                         <div className="mb-3 flex flex-col items-center">
                             <p className={labelStyle}>Book Cover</p>
                             <div className="mt-1 h-48 w-36 border border-gray-400 bg-white">
-                                {book?.cover_url && (
-                                    <img src={book.cover_url} alt={`Cover of ${title}`}
+                                {(book?.cover_url || previewCover) && (
+                                    <img src={book?.cover_url ?? previewCover} alt={`Cover of ${title}`}
                                     className="h-full w-full object-cover" />
                                 )}
                             </div>
+
+
+                        {/* UPLOAD/CHANGE BOOK COVER */}
+                        {!book?.cover_url && (
+                            <>
+                                <input
+                                type="file"
+                                accept="image/jpeg, image/png, image/webp"
+                                ref={coverInputRef}
+                                onChange={selectBookCover}
+                                className="hidden"
+                                />
+
                             <button
                                 type="button"
+                                onClick={() => coverInputRef.current.click()}
                                 className="mt-1 cursor-pointer text-sm font-bold text-stone-600 hover:underline"
                             >
-                                UPLOAD COVER
+                                {selectCover ? "CHANGE COVER" : "UPLOAD COVER"}
                             </button>
+                            </>
+                        )}
                         </div>
 
                         {/* Row 2 LEFT: Author */}

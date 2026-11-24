@@ -55,7 +55,7 @@ function BookInfo({ onClose, libro }) {
               <img
                 src={bookDetails.book_cover_image}
                 alt={`Cover of ${bookDetails.book_title}`}
-                className="mx-auto h-65 w-50 mt-5 mr-2 object-contain"
+                className="mx-auto h-65 w-50 mt-5 object-contain"
               />
             ) : (
               <div className="mx-auto flex h-40 w-28 items-center justify-center border border-stone-400 bg-stone-100 text-xs text-stone-500">

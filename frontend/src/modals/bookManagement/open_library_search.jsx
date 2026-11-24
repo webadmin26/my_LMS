@@ -16,9 +16,6 @@ function SearchOpenLibrary({ onClose, onBookAdded }) {
   const [textSearched, setTextSearched] = useState("");
   const [addBook, setAddBook] = useState(null);
 
-  //Pop up modal for successfully saving a copy of the book
-  const [savedBook, setSavedBook] = useState(null);
-
 
   const handleSearch = (evnt) => {
     evnt.preventDefault();
@@ -106,7 +103,7 @@ const handleLoadMore = () => {
             </select>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex w-full items-center gap-2 sm:w-auto">
             <label
               htmlFor="search-text"
               className="text-sm font-semibold text-stone-600"
@@ -119,7 +116,7 @@ const handleLoadMore = () => {
               onChange={(evnt) => setSearchText(evnt.target.value)}
               id="search-text"
               placeholder="Type or scan ISBN"
-              className="w-80 border-0 border-b border-gray-500 bg-transparent px-2 py-0.5 text-sm transition-all focus:rounded focus:border focus:border-emerald-500 focus:bg-white focus:outline-none"
+              className="min-w-0 flex-1 sm:w-80 sm:flex-none border-0 border-b border-gray-500 bg-transparent px-2 py-0.5 text-sm transition-all focus:rounded focus:border focus:border-emerald-500 focus:bg-white focus:outline-none"
             />
           </div>
 
@@ -157,7 +154,7 @@ const handleLoadMore = () => {
                 <th scope="col" className="px-4 py-1 text-sm font-normal">
                   ISBN
                 </th>
-                <th scope="col" className="px-4 py-1 text-sm font-normal">
+                <th scope="col" className="px-4 py-1 text-sm text-nowrap font-normal">
                   PUBLICATION YEAR
                 </th>
                 <th scope="col" className="px-4 py-1 text-sm font-normal">
@@ -283,46 +280,16 @@ const handleLoadMore = () => {
         </footer>
       </div>
 
-      {/* "Book saved" popup: shows the reply from POST /books (BookCreated) */}
-      {savedBook && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div role="dialog" aria-labelledby="saved-title" className="w-full max-w-md overflow-hidden rounded-lg bg-[#E5E5E5]">
-            <div id="saved-title" className="bg-emerald-600 py-1.5 text-center text-[15px] font-bold text-white">
-              BOOK SAVED
-            </div>
-            <div className="px-6 py-4 text-sm text-stone-600">
-              <p className="mb-2">
-                <span className="font-bold">{savedBook.book_title}</span> was added with {savedBook.barcodes.length} copies:
-              </p>
-              <ul className="list-disc pl-5">
-                {savedBook.barcodes.map((code) => (
-                  <li key={code}>{code}</li>
-                ))}
-              </ul>
-            </div>
-            <footer className="flex justify-end px-6 py-3">
-              <button
-                type="button"
-                onClick={() => setSavedBook(null)}
-                className="cursor-pointer font-bold text-emerald-600 hover:underline"
-              >
-                OK
-              </button>
-            </footer>
-          </div>
-        </div>
-      )}
-
+      {/* Add Book form (the BOOK SAVED popup now lives inside AddBook) */}
       {addBook && (
-        <AddBook 
+        <AddBook
         book={addBook}
         onClose={() => setAddBook(null)}
-        onSaved={(data) => {
-          setSavedBook(data); // show the BOOK SAVED popup
-          onBookAdded(); // reload the book table (loadBooks in booklist_table)
-        }}
+        onSaved={() => onBookAdded()} // reload the book table (loadBooks in booklist_table)
         />
       )}
+
+      
 
 
     </div>
